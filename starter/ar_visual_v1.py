@@ -179,9 +179,7 @@ def save_gif_images(env_name, max_ep_len):
 			act=out["action"]
 			
 			act = act.detach().cpu().numpy()
-			# writer.writerow(act)
 			next_ob, _, done, info = env.step(act)
-			# print(type(info['x_velocity']))
 			x_velocity = info['x_velocity']
 			velocity_writer.writerow([x_velocity])
 			# img = env.render(mode = 'rgb_array')

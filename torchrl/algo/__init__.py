@@ -10,5 +10,4 @@ __all__ = [
     'TD3',
     'ARSAC',
     'ARSAC_v2'
-    'ARPPO'
 ]

@@ -36,7 +36,7 @@ def experiment(args):
     device = torch.device("cuda:{}".format(args.device) if args.cuda else "cpu")
     env=gym.make(params['env_name'])
     # task_list=["forward_5","forward_6","forward_7","forward_8","forward_9","forward_10"]
-    task_list=["forward_1_v2"]
+    task_list=["forward_5_v2"]
     task_num=len(task_list)
     representation_shape= params['representation_shape']
     embedding_shape=params['embedding_shape']
@@ -75,8 +75,8 @@ def experiment(args):
         **params['p_state_net']
     )
     
-    # embedding = torch.normal(mean = torch.zeros(embedding_shape), std = 0.1).to(device)
-    # embedding.requires_grad = True
+    embedding = torch.normal(mean = torch.zeros(embedding_shape), std = 0.1).to(device)
+    embedding.requires_grad = True
     # embedding = Variable(torch.normal(mean = torch.zeros(embedding_shape), std = 0.1).to(device), requires_grad = True)
     
     pf_action=policies.ActionRepresentationGuassianContPolicy(
