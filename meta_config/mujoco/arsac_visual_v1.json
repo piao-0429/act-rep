@@ -20,5 +20,9 @@
     "p_action_net":{
         "hidden_shapes": [400,400],
         "append_hidden_shapes": [400,400]
-    }
+    },
+
+    "save_embedding": true,
+
+    "save_velocity": true
 }
