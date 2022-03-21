@@ -21,7 +21,7 @@ import torchrl.policies as policies
 import torchrl.networks as networks
 import gym
 from mujoco_py import GlfwContext
-GlfwContext(offscreen=True)  # Create a window to init GLFW.
+# GlfwContext(offscreen=True)  # Create a window to init GLFW.
 
 
 
@@ -30,7 +30,7 @@ args = get_args()
 params = get_params(args.config)
 env=gym.make(params['env_name'])
 # task_list=["forward_5","forward_6","forward_7","forward_8","forward_9","forward_10"]
-task_list=["forward_1","forward_2","forward_3","forward_4","forward_5","forward_6","forward_7","forward_8","forward_9","jump"]
+task_list=["forward_1","forward_2","forward_3","forward_4","forward_5","forward_6","forward_7","forward_8","forward_9","forward_10"]
 task_num=len(task_list)
 representation_shape= params['representation_shape']
 embedding_shape=params['embedding_shape']
@@ -169,22 +169,23 @@ def save_gif_images(env_name, max_ep_len):
 		task_input = torch.zeros(len(task_list))
 		task_input[i] = 1
 		task_input=task_input.unsqueeze(0).to("cpu")
-		for t in range(1, max_ep_len+1):
-			representation = pf_state.forward(torch.Tensor( ob ).to("cpu").unsqueeze(0))
-			embedding = pf_task.forward(task_input)
-			out=pf_action.explore(representation,embedding)
-			act=out["action"]
-			act = act.detach().cpu().numpy()
-			next_ob, _, done, info = env.step(act)
-			if params["save_velocity"]:
-				x_velocity = info['x_velocity']
-				velocity_writer.writerow([x_velocity])
-			img = env.render(mode = 'rgb_array')
-			img = Image.fromarray(img)
-			img.save(gif_images_dir_list[i] + '/' + experiment_id + '_' + task_list[i] + str(t).zfill(6) + '.jpg')
-			ob=next_ob
-			if done:
-				break
+		with torch.no_grad():
+			for t in range(1, max_ep_len+1):
+				representation = pf_state.forward(torch.Tensor( ob ).to("cpu").unsqueeze(0))
+				embedding = pf_task.forward(task_input)
+				out=pf_action.explore(representation,embedding)
+				act=out["action"]
+				act = act.detach().cpu().numpy()
+				next_ob, _, done, info = env.step(act)
+				if params["save_velocity"]:
+					x_velocity = info['x_velocity']
+					velocity_writer.writerow([x_velocity])
+				# img = env.render(mode = 'rgb_array')
+				# img = Image.fromarray(img)
+				# img.save(gif_images_dir_list[i] + '/' + experiment_id + '_' + task_list[i] + str(t).zfill(6) + '.jpg')
+				ob=next_ob
+				if done:
+					break
 
 		if params["save_embedding"]:
 			embedding = embedding.squeeze(0)
@@ -261,6 +262,6 @@ if __name__ == '__main__':
 	env_name = params["env_name"]
 	max_ep_len = 20000           
 	save_gif_images(env_name,  max_ep_len)
-	save_gif(env_name)
+	# save_gif(env_name)
 
 
