@@ -55,20 +55,6 @@ class ARSAC(OffRLAlgo):
             lr=self.qlr,
         )
 
-        # self.pf_state_optimizer = optimizer_class(
-        #     self.pf_state.parameters(),
-        #     lr=self.plr,
-        # )
-
-        # self.pf_task_optimizer = optimizer_class(
-        #     self.pf_task.parameters(),
-        #     lr=self.plr,
-        # )
-
-        # self.pf_action_optimizer = optimizer_class(
-        #     self.pf_action.parameters(),
-        #     lr=self.plr,
-        # )
         self.pf_optimizer = optimizer_class(
             (para for para in list(self.pf_state.parameters()) + list(self.pf_task.parameters()) + list(self.pf_action.parameters())),
             lr=self.plr
@@ -167,8 +153,6 @@ class ARSAC(OffRLAlgo):
             qf2_loss = self.qf_criterion(q2_pred, q_target.detach())
             assert q1_pred.shape == q_target.shape
             assert q2_pred.shape == q_target.shape
-            # qf1_loss = (0.5 * ( q1_pred - q_target.detach() ) ** 2).mean()
-            # qf2_loss = (0.5 * ( q2_pred - q_target.detach() ) ** 2).mean()
 
             q_new_actions = torch.min(
                 self.qf1([obs, new_actions,task_inputs]),
@@ -190,18 +174,13 @@ class ARSAC(OffRLAlgo):
             Update Networks
             """
 
-            # self.pf_state_optimizer.zero_grad()
-            # self.pf_task_optimizer.zero_grad()
-            # self.pf_action_optimizer.zero_grad()
+        
             self.pf_optimizer.zero_grad()
             policy_loss.backward()
             pf_state_norm = torch.nn.utils.clip_grad_norm_(self.pf_state.parameters(), 10)
             pf_task_norm = torch.nn.utils.clip_grad_norm_(self.pf_task.parameters(), 10)
             pf_action_norm = torch.nn.utils.clip_grad_norm_(self.pf_action.parameters(), 10)
             self.pf_optimizer.step()
-            # self.pf_action_optimizer.step()
-            # self.pf_task_optimizer.step()
-            # self.pf_state_optimizer.step()
 
             self.qf1_optimizer.zero_grad()
             qf1_loss.backward()

@@ -188,7 +188,10 @@ class ARSAC_v2(OffRLAlgo):
             # print(self.embedding.grad)
             # print("after update")
             # print(self.embedding)
-            
+            # print(embeddings.grad)
+            # print(embeddings.grad.mean(dim=0))
+            # print(self.embedding)
+            # print(self.embedding.grad)
             self.embedding.grad = embeddings.grad.mean(dim=0)
             embedding_norm = torch.nn.utils.clip_grad_norm_([self.embedding], 10)         
             self.embedding_optimizer.step()
