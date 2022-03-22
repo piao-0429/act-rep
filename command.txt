@@ -9,7 +9,7 @@ python torchrl/utils/plot_csv.py --id MUJOCO_ARMT_10_2mode --env_name HalfCheeta
 python torchrl/utils/plot_csv.py --id MUJOCO_ARMT_1_2mode --env_name HalfCheetah-v3 --entry "jump_eval_rewards" --add_tag _ARMT_1_2mode_seed_1 --seed 1
 
 3.evaluate
-python starter/ar_visual_v1.py --config meta_config/mujoco/arsac_visual_v1.json --id MUJOCO_ARMT_10_2mode --seed 1
+python starter/ar_visual_v1.py --config meta_config/mujoco/arsac_visual_v1.json --id MUJOCO_ARMT_1_2mode --seed 1
 
 
 
