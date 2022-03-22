@@ -6,8 +6,6 @@ from PIL import Image
 import csv
 import sys
 
-# from starter.ar_sac_fixedembedding import experiment
-
 sys.path.append(".") 
 import torch
 import os
@@ -32,8 +30,12 @@ args = get_args()
 params = get_params(args.config)
 env=gym.make(params['env_name'])
 # task_list=["forward_5","forward_6","forward_7","forward_8","forward_9","forward_10"]
+<<<<<<< HEAD
 # task_list=["forward_1","forward_2","forward_3","forward_4","forward_5","forward_6","forward_7","forward_8","forward_9","jump"]
 task_list=["jump"]
+=======
+task_list=["forward_1","forward_2","forward_3","forward_4","forward_5","forward_6","forward_7","forward_8","forward_9","forward_10"]
+>>>>>>> eb0d02c2d0c9b985c66cd462c99137a2eb17327b
 task_num=len(task_list)
 representation_shape= params['representation_shape']
 embedding_shape=params['embedding_shape']
@@ -81,10 +83,6 @@ def save_gif_images(env_name, max_ep_len):
 	if args.cuda:
 		torch.backends.cudnn.deterministic=True
 
-	
-
-	
-	
 	# make directory for saving gif images
 	gif_images_dir = "gif_images" + '/'
 	if not os.path.exists(gif_images_dir):
@@ -129,50 +127,54 @@ def save_gif_images(env_name, max_ep_len):
 		if not os.path.exists(gif_dir_list[i]):
 			os.makedirs(gif_dir_list[i])
 
-	
-	embed_dir = "embed"+'/'
-	if not os.path.exists(embed_dir):
-		os.makedirs(embed_dir)
-	embed_dir = embed_dir + '/' + experiment_id + '/'
-	if not os.path.exists(embed_dir):
-		os.makedirs(embed_dir)
-	embed_dir = embed_dir + '/' + env_name  + '/'
-	if not os.path.exists(embed_dir):
-		os.makedirs(embed_dir)
-	embed_dir = embed_dir + '/' + str(args.seed) + '/'
-	if not os.path.exists(embed_dir):
-		os.makedirs(embed_dir)	
+	if params["save_embedding"]:
+		embed_dir = "embedding"+'/'
+		if not os.path.exists(embed_dir):
+			os.makedirs(embed_dir)
+		embed_dir = embed_dir + '/' + experiment_id + '/'
+		if not os.path.exists(embed_dir):
+			os.makedirs(embed_dir)
+		embed_dir = embed_dir + '/' + env_name  + '/'
+		if not os.path.exists(embed_dir):
+			os.makedirs(embed_dir)
+		embed_dir = embed_dir + '/' + str(args.seed) + '/'
+		if not os.path.exists(embed_dir):
+			os.makedirs(embed_dir)	
 
-	velocity_dir = "velocity"+'/'
-	if not os.path.exists(velocity_dir):
-		os.makedirs(velocity_dir)
-	velocity_dir = velocity_dir + '/' + experiment_id + '/'
-	if not os.path.exists(velocity_dir):
-		os.makedirs(velocity_dir)
-	velocity_dir = velocity_dir + '/' + env_name  + '/'
-	if not os.path.exists(velocity_dir):
-		os.makedirs(velocity_dir)
-	velocity_dir = velocity_dir + '/' + str(args.seed) + '/'
-	if not os.path.exists(velocity_dir):
-		os.makedirs(velocity_dir)	
+	if params["save_velocity"]:
+		velocity_dir = "velocity"+'/'
+		if not os.path.exists(velocity_dir):
+			os.makedirs(velocity_dir)
+		velocity_dir = velocity_dir + '/' + experiment_id + '/'
+		if not os.path.exists(velocity_dir):
+			os.makedirs(velocity_dir)
+		velocity_dir = velocity_dir + '/' + env_name  + '/'
+		if not os.path.exists(velocity_dir):
+			os.makedirs(velocity_dir)
+		velocity_dir = velocity_dir + '/' + str(args.seed) + '/'
+		if not os.path.exists(velocity_dir):
+			os.makedirs(velocity_dir)	
 
-	average_v_csv_path = velocity_dir+ "/average_velocity.csv"
-	average_v_file = open(average_v_csv_path,"w")
-	average_v_writer = csv.writer(average_v_file)
-	average_v_writer.writerow(["task","v_mean","v_std"])
+		average_v_csv_path = velocity_dir+ "/average_velocity.csv"
+		average_v_file = open(average_v_csv_path,"w")
+		average_v_writer = csv.writer(average_v_file)
+		average_v_writer.writerow(["task","v_mean","v_std"])
 
 	for i in range(len(task_list)):
-		task_csv_path = embed_dir + '/' + task_list[i] + ".csv"
-		velocity_csv_path = velocity_dir+ '/' + task_list[i] + ".csv"
-		embed_file = open(task_csv_path, "w")
-		embed_writer = csv.writer(embed_file)
-		velocity_file = open(velocity_csv_path,'w')
-		velocity_writer = csv.writer(velocity_file)
+		if params["save_embedding"]:
+			embed_csv_path = embed_dir + '/' + task_list[i] + ".csv"
+			embed_file = open(embed_csv_path, "w")
+			embed_writer = csv.writer(embed_file)
+		if params["save_velocity"]:
+			velocity_csv_path = velocity_dir+ '/' + task_list[i] + ".csv"
+			velocity_file = open(velocity_csv_path,'w')
+			velocity_writer = csv.writer(velocity_file)
 
 		ob=env.reset()
 		task_input = torch.zeros(len(task_list))
 		task_input[i] = 1
 		task_input=task_input.unsqueeze(0).to("cpu")
+<<<<<<< HEAD
 		for t in range(1, max_ep_len+1):
 			representation = pf_state.forward(torch.Tensor( ob ).to("cpu").unsqueeze(0))
 			embedding = pf_task.forward(task_input)
@@ -210,6 +212,37 @@ def save_gif_images(env_name, max_ep_len):
 		
 		velocity_list = velocity_list[100:]
 		average_v_writer.writerow([task_list[i], np.mean(velocity_list), np.std(velocity_list)])
+=======
+		with torch.no_grad():
+			for t in range(1, max_ep_len+1):
+				representation = pf_state.forward(torch.Tensor( ob ).to("cpu").unsqueeze(0))
+				embedding = pf_task.forward(task_input)
+				out=pf_action.explore(representation,embedding)
+				act=out["action"]
+				act = act.detach().cpu().numpy()
+				next_ob, _, done, info = env.step(act)
+				if params["save_velocity"]:
+					x_velocity = info['x_velocity']
+					velocity_writer.writerow([x_velocity])
+				# img = env.render(mode = 'rgb_array')
+				# img = Image.fromarray(img)
+				# img.save(gif_images_dir_list[i] + '/' + experiment_id + '_' + task_list[i] + str(t).zfill(6) + '.jpg')
+				ob=next_ob
+				if done:
+					break
+
+		if params["save_embedding"]:
+			embedding = embedding.squeeze(0)
+			embedding = embedding.detach().cpu().numpy()
+			embed_writer.writerow(embedding)
+			embed_file.close()
+		if params["save_velocity"]:
+			velocity_file.close()
+			velocity_file = open(velocity_csv_path,'r')
+			velocity_list = np.loadtxt(velocity_file)
+			velocity_list = velocity_list[100:]
+			average_v_writer.writerow([task_list[i], np.mean(velocity_list), np.std(velocity_list)])
+>>>>>>> eb0d02c2d0c9b985c66cd462c99137a2eb17327b
 
 
 	env.close()
@@ -264,14 +297,15 @@ def save_gif(env_name):
 		img_paths_list[i] = img_paths_list[i][:total_timesteps]
 		img_paths_list[i] = img_paths_list[i][::step]
 
-	# save gif
 		img, *imgs = [Image.open(f) for f in img_paths_list[i]]
 		img.save(fp=gif_path_list[i], format='GIF', append_images=imgs, save_all=True, optimize=True, duration=frame_duration, loop=0)
 		print("saved gif at : ", gif_path_list[i])
 
+
+
 if __name__ == '__main__':
 	env_name = params["env_name"]
-	max_ep_len = 30000           
+	max_ep_len = 20000           
 	save_gif_images(env_name,  max_ep_len)
 	save_gif(env_name)
 

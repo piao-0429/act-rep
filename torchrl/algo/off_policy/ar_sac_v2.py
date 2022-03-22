@@ -93,7 +93,9 @@ class ARSAC_v2(OffRLAlgo):
             task_inputs = batch["task_inputs"]
             task_idx    = batch['task_idxs']
             embeddings = batch['embeddings']
-
+            # size = len(batch['obs'])
+            # shape = len(self.embedding)
+            # print(size,shape)
             rewards   = torch.Tensor(rewards).to( self.device )
             terminals = torch.Tensor(terminals).to( self.device )
             obs       = torch.Tensor(obs).to( self.device )
@@ -102,6 +104,8 @@ class ARSAC_v2(OffRLAlgo):
             task_inputs = torch.Tensor(task_inputs).to(self.device).long()
             task_idx    = torch.Tensor(task_idx).to( self.device ).long()
             embeddings = torch.Tensor(embeddings).to(self.device)
+            embeddings.requires_grad = True
+            # embeddings = self.embedding.expand(size, shape).to(self.device)
             self.qf1.train()
             self.qf2.train()
 
@@ -109,6 +113,8 @@ class ARSAC_v2(OffRLAlgo):
             Policy operations.
             """
             representations=self.pf_state.forward(obs)
+            
+            # print(embeddings)
             sample_info = self.pf_action.explore(representations, embeddings, return_log_probs=True )
 
             mean        = sample_info["mean"]
@@ -176,15 +182,22 @@ class ARSAC_v2(OffRLAlgo):
             """
 
             self.embedding_optimizer.zero_grad()
-            print()
+            # print("before update")
+            # print(self.embedding)
             policy_loss.backward()
-            
+            # print(self.embedding.grad)
+            # print("after update")
+            # print(self.embedding)
+            # print(embeddings.grad)
+            # print(embeddings.grad.mean(dim=0))
+            # print(self.embedding)
+            # print(self.embedding.grad)
+            self.embedding.grad = embeddings.grad.mean(dim=0)
             embedding_norm = torch.nn.utils.clip_grad_norm_([self.embedding], 10)         
             self.embedding_optimizer.step()
 
             self.qf1_optimizer.zero_grad()
             qf1_loss.backward()
-            print(qf1_loss)
             qf1_norm = torch.nn.utils.clip_grad_norm_(self.qf1.parameters(), 10)
             self.qf1_optimizer.step()
 
@@ -242,8 +255,6 @@ class ARSAC_v2(OffRLAlgo):
     @property
     def snapshot_networks(self):
         return [
-            # ["pf_state", self.pf_state],
-            # ["pf_action", self.pf_action],
             ["qf1", self.qf1],
             ["qf2", self.qf2],
         ]

@@ -36,7 +36,7 @@ def experiment(args):
     device = torch.device("cuda:{}".format(args.device) if args.cuda else "cpu")
     env=gym.make(params['env_name'])
     # task_list=["forward_5","forward_6","forward_7","forward_8","forward_9","forward_10"]
-    task_list=["forward_1_v2"]
+    task_list=["forward_5.5_mixed"]
     task_num=len(task_list)
     representation_shape= params['representation_shape']
     embedding_shape=params['embedding_shape']
@@ -75,8 +75,9 @@ def experiment(args):
         **params['p_state_net']
     )
     
-    # embedding = torch.normal(mean = torch.zeros(embedding_shape), std = 0.1).to(device)
-    # embedding.requires_grad = True
+    # embedding = torch.normal(mean = torch.zeros(embedding_shape), std = 0.1).to(device).requires_grad_()
+    embedding = torch.Tensor([116.66403,119.96243,-351.09204,75.93475,-0.3881659,47.560207,210.16183,394.06943,303.57553,45.66178,-90.592026,-167.94612,-247.4873,-163.70718,117.24094,81.90116])
+    embedding = embedding.to(device).requires_grad_()
     # embedding = Variable(torch.normal(mean = torch.zeros(embedding_shape), std = 0.1).to(device), requires_grad = True)
     
     pf_action=policies.ActionRepresentationGuassianContPolicy(
@@ -94,8 +95,8 @@ def experiment(args):
         **params['q_net'] )
     
     model_dir = "log/"+experiment_name+"/"+params['env_name']+"/"+str(args.seed)+"/model/"
-    pf_state.load_state_dict(torch.load(model_dir+"model_pf_state_best.pth", map_location='cpu'))
-    pf_action.load_state_dict(torch.load(model_dir+"model_pf_action_best.pth", map_location='cpu'))
+    pf_state.load_state_dict(torch.load(model_dir+"model_pf_state_finish.pth", map_location='cpu'))
+    pf_action.load_state_dict(torch.load(model_dir+"model_pf_action_finish.pth", map_location='cpu'))
 
     example_ob = env.reset()
     example_dict = { 
