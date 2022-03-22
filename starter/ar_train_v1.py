@@ -34,7 +34,7 @@ def experiment(args):
     env=gym.make(params['env_name'])
     task_list=["forward_1","forward_2","forward_3","forward_4","forward_5","forward_6","forward_7","forward_8","forward_9","jump"]
     # task_list = ["forward_1","forward_2","forward_3","forward_4","forward_5"]
-    task_list = ["jump"]
+    task_list = ["forward_5.5"]
     task_num=len(task_list)
     representation_shape= params['representation_shape']
     embedding_shape=params['embedding_shape']

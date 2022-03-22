@@ -586,7 +586,7 @@ class AsyncMultiTaskParallelCollectorForActionRepresentation(AsyncSingleTaskPara
 
             for key in shared_funcs:
                 local_funcs[key].load_state_dict(shared_funcs[key].state_dict())
-
+            print(list(shared_funcs["pf_state"].parameters()))
             train_rews = []
             train_epoch_reward = 0    
 
@@ -825,7 +825,7 @@ class AsyncMultiTaskParallelCollectorForActionRepresentation_v2(AsyncSingleTaskP
 
     def __init__(self, embedding, progress_alpha=0.1, **kwargs):
         self.embedding = embedding
-        self.share_embedding = copy.deepcopy(self.embedding)
+        self.share_embedding = copy.copy(self.embedding)
         super().__init__(**kwargs)
         self.tasks=self.task_list
         self.tasks_mapping = {}
@@ -932,6 +932,7 @@ class AsyncMultiTaskParallelCollectorForActionRepresentation_v2(AsyncSingleTaskP
                 local_funcs[key].load_state_dict(shared_funcs[key].state_dict())
             local_embedding = share_embedding
             local_embedding = local_embedding.unsqueeze(0).to("cpu")
+            # print(share_embedding)
             train_rews = []
             train_epoch_reward = 0    
 
@@ -959,8 +960,7 @@ class AsyncMultiTaskParallelCollectorForActionRepresentation_v2(AsyncSingleTaskP
         pf_state = copy.deepcopy(shared_pf_state).to(env_info.device)
         pf_action = copy.deepcopy(shared_pf_action).to(env_info.device)
         # print(shared_embedding)
-        embedding = copy.deepcopy(shared_embedding).to(env_info.device)
-        embedding = embedding.unsqueeze(0).to("cpu")
+        
         # print(embedding)
         current_epoch = 0
         while True:
@@ -978,9 +978,11 @@ class AsyncMultiTaskParallelCollectorForActionRepresentation_v2(AsyncSingleTaskP
             pf_action.load_state_dict(shared_pf_action.state_dict())
             pf_state.eval()
             pf_action.eval()
-
+            embedding = copy.deepcopy(shared_embedding).to(env_info.device)
+            embedding = embedding.unsqueeze(0).to("cpu")
             eval_rews = []  
-
+            # print("eval:")
+            # print(shared_embedding)
             done = False
           
             for idx in range(env_info.eval_episodes):
@@ -991,9 +993,9 @@ class AsyncMultiTaskParallelCollectorForActionRepresentation_v2(AsyncSingleTaskP
                 task_idx = env_info.task_rank
                 
                 while not done:
-                    task_input = torch.zeros(env_info.num_tasks)
-                    task_input[env_info.task_rank] = 1
-                    task_input = task_input.unsqueeze(0).to(env_info.device)
+                    # task_input = torch.zeros(env_info.num_tasks)
+                    # task_input[env_info.task_rank] = 1
+                    # task_input = task_input.unsqueeze(0).to(env_info.device)
                     eval_ob =  torch.Tensor( eval_ob ).to(env_info.device).unsqueeze(0)
                     representation = pf_state.forward(eval_ob)
                     act = pf_action.eval_act(representation, embedding)
@@ -1136,7 +1138,7 @@ class AsyncMultiTaskParallelCollectorForActionRepresentation_v2(AsyncSingleTaskP
 
         for key in self.shared_funcs:
             self.shared_funcs[key].load_state_dict(self.funcs[key].state_dict())
-        self.share_embedding = self.embedding
+        # self.share_embedding = self.embedding
         active_worker_nums = 0
         for _ in range(self.worker_nums):
             worker_rst = self.shared_que.get()
