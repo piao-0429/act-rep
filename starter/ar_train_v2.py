@@ -1,5 +1,5 @@
 import sys
-
+import csv
 
 
 sys.path.append(".") 
@@ -145,7 +145,15 @@ def experiment(args):
         **params['general_setting']
     )
     agent.train()
-    
+    final_embedding = agent.embedding
+    embed_dir = "log/" + experiment_name_v2 + '/' + params['env_name'] + '/' + str(args.seed)+"/model/"
+    embed_csv_path = embed_dir + '/' + task_list[0] + ".csv"
+    embed_file = open(embed_csv_path, "w")
+    embed_writer = csv.writer(embed_file)
+    embedding = final_embedding.detach().cpu().numpy()
+    embed_writer.writerow(embedding)
+    embed_file.close()
+
 
 if __name__ == "__main__":
     experiment(args)

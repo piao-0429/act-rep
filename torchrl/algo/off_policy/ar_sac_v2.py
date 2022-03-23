@@ -92,10 +92,8 @@ class ARSAC_v2(OffRLAlgo):
             terminals = batch['terminals']
             task_inputs = batch["task_inputs"]
             task_idx    = batch['task_idxs']
-            embeddings = batch['embeddings']
-            # size = len(batch['obs'])
-            # shape = len(self.embedding)
-            # print(size,shape)
+            example_embeddings = batch['embeddings']
+          
             rewards   = torch.Tensor(rewards).to( self.device )
             terminals = torch.Tensor(terminals).to( self.device )
             obs       = torch.Tensor(obs).to( self.device )
@@ -103,9 +101,15 @@ class ARSAC_v2(OffRLAlgo):
             next_obs  = torch.Tensor(next_obs).to( self.device )
             task_inputs = torch.Tensor(task_inputs).to(self.device).long()
             task_idx    = torch.Tensor(task_idx).to( self.device ).long()
-            embeddings = torch.Tensor(embeddings).to(self.device)
-            embeddings.requires_grad = True
-            # embeddings = self.embedding.expand(size, shape).to(self.device)
+            example_embeddings = torch.Tensor(example_embeddings)
+            embedding = copy.deepcopy(self.embedding)
+            embeddings = embedding.expand_as(example_embeddings).to(self.device)
+            # print(embedding)
+            # print(embeddings)
+
+
+
+            
             self.qf1.train()
             self.qf2.train()
 
@@ -188,11 +192,11 @@ class ARSAC_v2(OffRLAlgo):
             # print(self.embedding.grad)
             # print("after update")
             # print(self.embedding)
-            # print(embeddings.grad)
+            # print(embedding.grad)
             # print(embeddings.grad.mean(dim=0))
             # print(self.embedding)
             # print(self.embedding.grad)
-            self.embedding.grad = embeddings.grad.mean(dim=0)
+            self.embedding.grad = embedding.grad
             embedding_norm = torch.nn.utils.clip_grad_norm_([self.embedding], 10)         
             self.embedding_optimizer.step()
 
