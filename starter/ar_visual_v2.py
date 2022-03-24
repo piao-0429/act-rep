@@ -21,7 +21,7 @@ import torchrl.policies as policies
 import torchrl.networks as networks
 import gym
 from mujoco_py import GlfwContext
-# GlfwContext(offscreen=True)  # Create a window to init GLFW.
+GlfwContext(offscreen=True)  # Create a window to init GLFW.
 
 
 
@@ -30,7 +30,8 @@ args = get_args()
 params = get_params(args.config)
 env=gym.make(params['env_name'])
 # task_list=["forward_5","forward_6","forward_7","forward_8","forward_9","forward_10"]
-task_list=["forward_1.5_mixed","forward_2.5_mixed","forward_3.5_mixed","forward_4.5_mixed","forward_5.5_mixed","forward_6.5_mixed","forward_7.5_mixed","forward_8.5_mixed"]
+task_list=["forward_1.5_mixed","forward_2.5_mixed","forward_3.5_mixed","forward_4.5_mixed","forward_5.5_mixed","forward_6.5_mixed","forward_7.5_mixed","forward_8.5_mixed","forward_9.5_mixed"]
+# task_list=["forward_5.5_mixed_v2"]
 task_num=len(task_list)
 representation_shape= params['representation_shape']
 embedding_shape=params['embedding_shape']
@@ -148,30 +149,36 @@ def save_gif_images(env_name, max_ep_len):
 		average_v_writer.writerow(["task","v_mean","v_std"])
 
 	pre_embeddings = []
-	pre_embedding = torch.Tensor([153.79562,280.24725,-529.27454,-256.4803,418.4877,326.17126,357.36996,835.0294,305.83417,385.8792,-336.05194,-447.83795,-525.18695,14.119919,470.81238,178.08601]).unsqueeze(0)
+	pre_embedding = torch.Tensor([14.38648,-9.580958,-16.041727,-1.164166,12.3197365,3.672143,-3.1414335,-4.0125556,-6.67028,0.63735306,-60.31507,-26.34062,-53.79265,16.057978,2.2778113,3.4116797]).unsqueeze(0)
 	pre_embeddings.append(pre_embedding)
-	pre_embedding = torch.Tensor([134.76494,19.112263,-614.83606,140.54968,-54.789043,176.52586,370.16415,882.07806,542.43384,144.7351,-43.848366,-256.3044,-469.94504,-203.53123,428.9156,14.24445]).unsqueeze(0)
+	pre_embedding = torch.Tensor([4.8981857,-2.1659336,3.6557002,-2.8433738,14.906114,5.482699,-2.4826305,5.823681,1.2792983,-2.8405387,-25.147417,-27.718727,-52.27161,-6.88948,-0.24129571,8.554256]).unsqueeze(0)
 	pre_embeddings.append(pre_embedding)	
-	pre_embedding = torch.Tensor([109.54987,184.96585,-528.96,171.06128,10.6771145,53.088627,332.48068,650.1679,465.79703,34.77299,-128.60837,-264.37967,-379.33554,-192.87706,184.73157,-21.901499]).unsqueeze(0)
+	pre_embedding = torch.Tensor([4.5458994,-2.4300458,1.1819551,0.26374474,10.243903,-1.2598388,0.9122858,6.1226835,-5.1163387,2.9107726,-13.963078,-36.49345,-43.173885,0.9039712,-0.21359862,-4.856464]).unsqueeze(0)
 	pre_embeddings.append(pre_embedding)	
-	pre_embedding = torch.Tensor([108.81322,128.67648,-443.9819,95.23057,-9.84914,77.29975,273.8642,488.3134,373.95648,61.89438,-101.368835,-207.6508,-320.509,-217.83714,124.40808,40.202007]).unsqueeze(0)
+	pre_embedding = torch.Tensor([0.750622,-0.7132483,-1.2707405,-0.19877918,14.4466,1.3527036,-2.9070518,3.2331638,-3.613355,0.078160346,-5.9566245,-22.410223,-27.49646,13.948006,0.009050498,6.310787]).unsqueeze(0)
 	pre_embeddings.append(pre_embedding)	
-	pre_embedding = torch.Tensor([116.66403,119.96243,-351.09204,75.93475,-0.3881659,47.560207,210.16183,394.06943,303.57553,45.66178,-90.592026,-167.94612,-247.4873,-163.70718,117.24094,81.90116]).unsqueeze(0)
+	pre_embedding = torch.Tensor([2.0344,-0.18211967,-1.016011,-0.58528906,9.130649,0.6399375,3.0131373,6.2298174,-0.51527363,-0.891654,-5.2474966,-22.75474,-25.72084,13.634716,0.80226827,11.896404]).unsqueeze(0)
 	pre_embeddings.append(pre_embedding)
-	pre_embedding = torch.Tensor([89.052956,73.54011,-262.6336,45.055637,-3.3709183,24.53887,151.59283,298.6229,228.81876,43.02485,-88.03662,-113.893166,-180.4979,-140.0946,102.57138,32.55124]).unsqueeze(0)
+	pre_embedding = torch.Tensor([-0.9266835,-0.6330202,-1.6333201,0.63965774,6.352248,0.66435474,0.8719162,2.4231133,1.841162,1.8156424,-7.528089,-24.090658,-28.71157,13.208413,-2.377902,13.784845]).unsqueeze(0)
 	pre_embeddings.append(pre_embedding)
-	pre_embedding = torch.Tensor([69.323326,74.46447,-174.82712,28.269516,-1.2693439,10.076403,87.81177,245.18869,157.76514,50.685978,-64.21518,-68.9504,-122.94437,-119.96198,106.703285,25.989784]).unsqueeze(0)
+	pre_embedding = torch.Tensor([-1.807375,-0.2934243,-0.53428394,1.122416,3.113141,0.43747795,2.2722063,2.1431649,-1.4136422,-0.55535513,-7.9582887,-23.233164,-28.072113,14.592276,-2.953101,14.686382]).unsqueeze(0)
 	pre_embeddings.append(pre_embedding)
-	pre_embedding = torch.Tensor([49.46687,49.43225,-118.72213,11.566086,1.7729292,8.120008,54.789127,205.96275,102.005905,61.151184,-46.54895,-45.96882,-87.423935,-98.79142,106.20102,24.958017]).unsqueeze(0)
+	pre_embedding = torch.Tensor([-0.095981285,0.007204056,-0.6657414,-1.8221579,1.1506329,-0.12960353,1.6366785,0.75239086,-2.0837288,0.45380038,-6.7266593,-24.581785,-28.539667,14.750387,-2.41665,16.084827]).unsqueeze(0)
 	pre_embeddings.append(pre_embedding)
-	pre_embedding = torch.Tensor([47.273678,56.719967,-59.401848,-16.39408,-21.8002,26.747112,23.259615,186.2252,43.807724,86.055824,-40.994904,-17.574709,-45.97895,-73.92034,110.33748,19.125895]).unsqueeze(0)
+	pre_embedding = torch.Tensor([0.8919491,0.50149125,-0.11360723,0.42947873,-0.5063789,0.54685724,0.14096078,0.09657806,-0.5318501,0.5202051,-6.641752,-25.089462,-28.634327,13.858293,0.71471775,18.007915]).unsqueeze(0)
+	pre_embeddings.append(pre_embedding)
+	pre_embedding = torch.Tensor([-0.93191594,-0.41936427,-0.07612151,-0.059824474,-1.2776589,1.6989226,1.0947989,-2.3466268,-1.4157791,2.0586221,-7.58253,-28.525173,-30.30743,14.7991085,2.3285377,18.076374]).unsqueeze(0)
 	pre_embeddings.append(pre_embedding)
 
 	embeddings = []
 	for i in range(task_num):
 		embedding = 0.5 * pre_embeddings[i] + 0.5 * pre_embeddings[i+1]
 		embeddings.append(embedding)
-	
+	# embedding = torch.Tensor([91.18837,123.0279,-117.92559,74.70717,-0.8363521,237.00586,143.59999,257.87402,585.4402,28.773743,53.124676,-471.30557,-26.860031,-317.3784,119.19396,124.50042]).unsqueeze(0)
+	# embeddings=[]
+	# embeddings.append(embedding)
+
+
 	for i in range(task_num):
 		if params["save_embedding"]:
 			embed_csv_path = embed_dir + '/' + task_list[i] + ".csv"
@@ -197,9 +204,9 @@ def save_gif_images(env_name, max_ep_len):
 				if params["save_velocity"]:
 					x_velocity = info['x_velocity']
 					velocity_writer.writerow([x_velocity])
-				# img = env.render(mode = 'rgb_array')
-				# img = Image.fromarray(img)
-				# img.save(gif_images_dir_list[i] + '/' + experiment_id + '_' + task_list[i] + str(t).zfill(6) + '.jpg')
+				img = env.render(mode = 'rgb_array')
+				img = Image.fromarray(img)
+				img.save(gif_images_dir_list[i] + '/' + experiment_id + '_' + task_list[i] + str(t).zfill(6) + '.jpg')
 				ob=next_ob
 				if done:
 					break

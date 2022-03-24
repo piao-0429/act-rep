@@ -30,12 +30,8 @@ args = get_args()
 params = get_params(args.config)
 env=gym.make(params['env_name'])
 # task_list=["forward_5","forward_6","forward_7","forward_8","forward_9","forward_10"]
-<<<<<<< HEAD
-# task_list=["forward_1","forward_2","forward_3","forward_4","forward_5","forward_6","forward_7","forward_8","forward_9","jump"]
-task_list=["jump"]
-=======
-task_list=["forward_1","forward_2","forward_3","forward_4","forward_5","forward_6","forward_7","forward_8","forward_9","forward_10"]
->>>>>>> eb0d02c2d0c9b985c66cd462c99137a2eb17327b
+task_list=["forward_1","forward_2","forward_3","forward_4","forward_5","forward_6","forward_7","forward_8","forward_9","jump"]
+# task_list=["jump"]
 task_num=len(task_list)
 representation_shape= params['representation_shape']
 embedding_shape=params['embedding_shape']
@@ -174,45 +170,6 @@ def save_gif_images(env_name, max_ep_len):
 		task_input = torch.zeros(len(task_list))
 		task_input[i] = 1
 		task_input=task_input.unsqueeze(0).to("cpu")
-<<<<<<< HEAD
-		for t in range(1, max_ep_len+1):
-			representation = pf_state.forward(torch.Tensor( ob ).to("cpu").unsqueeze(0))
-			embedding = pf_task.forward(task_input)
-			out=pf_action.explore(representation,embedding)
-			act=out["action"]
-			
-			act = act.detach().cpu().numpy()
-			# writer.writerow(act)
-			next_ob, _, done, info = env.step(act)
-			# print(type(info['x_velocity']))
-			x_velocity = info['x_velocity']
-			velocity_writer.writerow([x_velocity])
-			img = env.render(mode = 'rgb_array')
-			
-			img = Image.fromarray(img)
-			img.save(gif_images_dir_list[i] + '/' + experiment_id + '_' + task_list[i] + str(t).zfill(6) + '.jpg')
-			ob=next_ob
-			if done:
-				break
-
-	
-		embedding = embedding.squeeze(0)
-		embedding = embedding.detach().cpu().numpy()
-		
-		embed_writer.writerow(embedding)
-		embed_file.close()
-		velocity_file.close()
-		velocity_file = open(velocity_csv_path,'r')
-		velocity_list = np.loadtxt(velocity_file)
-		
-		
-
-			
-			
-		
-		velocity_list = velocity_list[100:]
-		average_v_writer.writerow([task_list[i], np.mean(velocity_list), np.std(velocity_list)])
-=======
 		with torch.no_grad():
 			for t in range(1, max_ep_len+1):
 				representation = pf_state.forward(torch.Tensor( ob ).to("cpu").unsqueeze(0))
@@ -224,9 +181,9 @@ def save_gif_images(env_name, max_ep_len):
 				if params["save_velocity"]:
 					x_velocity = info['x_velocity']
 					velocity_writer.writerow([x_velocity])
-				# img = env.render(mode = 'rgb_array')
-				# img = Image.fromarray(img)
-				# img.save(gif_images_dir_list[i] + '/' + experiment_id + '_' + task_list[i] + str(t).zfill(6) + '.jpg')
+				img = env.render(mode = 'rgb_array')
+				img = Image.fromarray(img)
+				img.save(gif_images_dir_list[i] + '/' + experiment_id + '_' + task_list[i] + str(t).zfill(6) + '.jpg')
 				ob=next_ob
 				if done:
 					break
@@ -242,7 +199,6 @@ def save_gif_images(env_name, max_ep_len):
 			velocity_list = np.loadtxt(velocity_file)
 			velocity_list = velocity_list[100:]
 			average_v_writer.writerow([task_list[i], np.mean(velocity_list), np.std(velocity_list)])
->>>>>>> eb0d02c2d0c9b985c66cd462c99137a2eb17327b
 
 
 	env.close()
@@ -306,7 +262,7 @@ def save_gif(env_name):
 if __name__ == '__main__':
 	env_name = params["env_name"]
 	max_ep_len = 20000           
-	save_gif_images(env_name,  max_ep_len)
+	# save_gif_images(env_name,  max_ep_len)
 	save_gif(env_name)
 
 
