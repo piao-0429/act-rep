@@ -37,7 +37,7 @@ python torchrl/utils/plot_csv.py --id MUJOCO_ARMT_10_2mode_v2 --env_name HalfChe
 python starter/ar_visual_v1.py --config meta_config/mujoco/arsac_visual_v1.json --id MUJOCO_ARMT_1_2mode --seed 1
 python starter/ar_visual_v1.py --config meta_config/mujoco/arsac_visual_v1.json --id MUJOCO_ARMT_10 --seed 1
 python starter/ar_visual_v2.py --config meta_config/mujoco/arsac_visual_v2.json --id MUJOCO_ARMT_10 --seed 1
-
+python starter/ar_visual_v2.py --config meta_config/mujoco/arsac_visual_v2.json --id MUJOCO_ARMT_10_2mode --seed 1
 python starter/ar_visual_v1.py --config meta_config/mujoco/arsac_visual_v1.json --id MUJOCO_ARMT_10 --seed 1
 
 

@@ -36,7 +36,7 @@ def experiment(args):
     device = torch.device("cuda:{}".format(args.device) if args.cuda else "cpu")
     env=gym.make(params['env_name'])
     # task_list=["forward_5","forward_6","forward_7","forward_8","forward_9","forward_10"]
-    task_list=["forward_9_v2"]
+    task_list=["forward_5.5_v2"]
     task_num=len(task_list)
     representation_shape= params['representation_shape']
     embedding_shape=params['embedding_shape']
@@ -76,7 +76,7 @@ def experiment(args):
     )
     
     # embedding = torch.normal(mean = torch.zeros(embedding_shape), std = 0.1).to(device).requires_grad_()
-    embedding = torch.Tensor([47.27367,56.71996,-59.40185,-16.39408,-21.800194,26.74711,23.259613,186.22522,43.807724,86.055824,-40.9949,-17.574697,-45.97895,-73.92034,110.33746,19.125893])
+    embedding = torch.Tensor([102.85849,96.75127,-306.86282,60.495193,-1.8795421,36.049538,180.87733,346.34616,266.19714,44.343315,-89.31432,-140.91965,-213.9926,-151.9009,109.90616,57.2262])
     embedding = embedding.to(device).requires_grad_()
     # embedding = Variable(torch.normal(mean = torch.zeros(embedding_shape), std = 0.1).to(device), requires_grad = True)
     

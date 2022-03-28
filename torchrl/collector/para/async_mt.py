@@ -1011,7 +1011,7 @@ class AsyncMultiTaskParallelCollectorForActionRepresentation_v2(AsyncSingleTaskP
       
             shared_que.put({
                 'eval_rewards': eval_rews,
-             
+                'embedding': shared_embedding.detach().cpu(),
                 'task_name': task_name
             })
 
@@ -1111,6 +1111,7 @@ class AsyncMultiTaskParallelCollectorForActionRepresentation_v2(AsyncSingleTaskP
         active_task_counts = 0
         for _ in range(self.eval_worker_nums):
             worker_rst = self.eval_shared_que.get()
+            print(worker_rst['embedding'])
             if worker_rst["eval_rewards"] is not None:
                 active_task_counts += 1
                 eval_rews += worker_rst["eval_rewards"]
