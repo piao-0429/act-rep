@@ -43,8 +43,8 @@ def experiment(args):
 
 
 
-
-    env.seed(args.seed)
+    env.reset(seed = args.seed)
+    # env.seed(args.seed)
     torch.manual_seed(args.seed)
     np.random.seed(args.seed)
     if args.cuda:
@@ -54,7 +54,7 @@ def experiment(args):
 
     experiment_name = os.path.split( os.path.splitext( args.config )[0] )[-1] if args.id is None \
         else args.id
-    experiment_name_v2 = experiment_name + "_v2"
+    experiment_name_v2 = experiment_name + "_v3"
 
     logger = Logger( experiment_name_v2 , params['env_name'], args.seed, params, args.log_dir )
 
@@ -75,10 +75,8 @@ def experiment(args):
         **params['p_state_net']
     )
     
-    # embedding = torch.normal(mean = torch.zeros(embedding_shape), std = 0.1).to(device).requires_grad_()
     embedding = torch.Tensor([102.85849,96.75127,-306.86282,60.495193,-1.8795421,36.049538,180.87733,346.34616,266.19714,44.343315,-89.31432,-140.91965,-213.9926,-151.9009,109.90616,57.2262])
     embedding = embedding.to(device).requires_grad_()
-    # embedding = Variable(torch.normal(mean = torch.zeros(embedding_shape), std = 0.1).to(device), requires_grad = True)
     
     pf_action=policies.ActionRepresentationGuassianContPolicy(
         input_shape = representation_shape + embedding_shape,

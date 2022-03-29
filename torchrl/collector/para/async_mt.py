@@ -586,7 +586,7 @@ class AsyncMultiTaskParallelCollectorForActionRepresentation(AsyncSingleTaskPara
 
             for key in shared_funcs:
                 local_funcs[key].load_state_dict(shared_funcs[key].state_dict())
-            print(list(shared_funcs["pf_state"].parameters()))
+            # print(list(shared_funcs["pf_state"].parameters()))
             train_rews = []
             train_epoch_reward = 0    
 

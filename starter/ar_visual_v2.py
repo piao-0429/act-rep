@@ -21,7 +21,7 @@ import torchrl.policies as policies
 import torchrl.networks as networks
 import gym
 from mujoco_py import GlfwContext
-GlfwContext(offscreen=True)  # Create a window to init GLFW.
+# GlfwContext(offscreen=True)  # Create a window to init GLFW.
 
 
 
@@ -31,7 +31,7 @@ params = get_params(args.config)
 env=gym.make(params['env_name'])
 # task_list=["forward_5","forward_6","forward_7","forward_8","forward_9","forward_10"]
 task_list=["forward_1.5_mixed","forward_2.5_mixed","forward_3.5_mixed","forward_4.5_mixed","forward_5.5_mixed","forward_6.5_mixed","forward_7.5_mixed","forward_8.5_mixed","forward_9.5_mixed"]
-task_list=["forward_5.5_mixed_v2"]
+task_list=["forward_5.5_mixed"]
 task_num=len(task_list)
 representation_shape= params['representation_shape']
 embedding_shape=params['embedding_shape']
@@ -65,7 +65,8 @@ def save_gif_images(env_name, max_ep_len):
 
 	print("============================================================================================")
 	device = torch.device("cuda:{}".format(args.device) if args.cuda else "cpu")
-	env.seed(args.seed)
+	# env.seed(args.seed)
+	env.reset(seed=args.seed)
 	torch.manual_seed(args.seed)
 	np.random.seed(args.seed)
 	if args.cuda:
@@ -144,7 +145,7 @@ def save_gif_images(env_name, max_ep_len):
 			os.makedirs(velocity_dir)	
 
 		average_v_csv_path = velocity_dir+ "/average_velocity_mixed.csv"
-		average_v_file = open(average_v_csv_path,"w")
+		average_v_file = open(average_v_csv_path,"a")
 		average_v_writer = csv.writer(average_v_file)
 		average_v_writer.writerow(["task","v_mean","v_std"])
 
@@ -197,7 +198,7 @@ def save_gif_images(env_name, max_ep_len):
 				# embedding_5 = torch.Tensor([116.66403,119.96243,-351.09204,75.93475,-0.3881659,47.560207,210.16183,394.06943,303.57553,45.66178,-90.592026,-167.94612,-247.4873,-163.70718,117.24094,81.90116]).unsqueeze(0)
 				# embedding_6 = torch.Tensor([89.052956,73.54011,-262.6336,45.055637,-3.3709183,24.53887,151.59283,298.6229,228.81876,43.02485,-88.03662,-113.893166,-180.4979,-140.0946,102.57138,32.55124]).unsqueeze(0)
 				# embedding = 0.5 * embedding_5 + 0.5 * embedding_6
-				embedding=torch.Tensor([102.85849,96.75127,-306.86282,60.495193,-1.8795421,36.049538,180.87733,346.34616,266.19714,44.343315,-89.31432,-140.91965,-213.9926,-151.9009,109.90616,57.2262]).unsqueeze(0)
+				embedding=torch.Tensor([93.40412,160.58662,-150.15569,91.56476,25.814232,176.67238,228.76828,228.39816,673.3303,81.97838,200.58913,-530.2282,192.42592,-315.63486,107.21659,83.910355]).unsqueeze(0)
 				out=pf_action.explore(representation,embedding)
 				act=out["action"]
 				act = act.detach().cpu().numpy()
@@ -205,9 +206,9 @@ def save_gif_images(env_name, max_ep_len):
 				if params["save_velocity"]:
 					x_velocity = info['x_velocity']
 					velocity_writer.writerow([x_velocity])
-				img = env.render(mode = 'rgb_array')
-				img = Image.fromarray(img)
-				img.save(gif_images_dir_list[i] + '/' + experiment_id + '_' + task_list[i] + str(t).zfill(6) + '.jpg')
+				# img = env.render(mode = 'rgb_array')
+				# img = Image.fromarray(img)
+				# img.save(gif_images_dir_list[i] + '/' + experiment_id + '_' + task_list[i] + str(t).zfill(6) + '.jpg')
 				ob=next_ob
 				if done:
 					break

@@ -28,7 +28,7 @@
 
     "general_setting": {
         "discount" : 0.99,
-        "pretrain_epochs" : 20,
+        "pretrain_epochs" : 100,
         "num_epochs" : 7500,
         "epoch_frames" : 200,
         "max_episode_frames" : 200,
@@ -42,7 +42,7 @@
     },
 
     "sac":{
-        "plr" : 0.001,
+        "plr" : 3e-4,
         "qlr" : 3e-4,
         "reparameterization": true,
         "automatic_entropy_tuning": true,
