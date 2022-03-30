@@ -24,7 +24,7 @@ params = get_params(args.config)
 import torchrl.policies as policies
 import torchrl.networks as networks
 from torchrl.algo.off_policy.ar_sac_embed import ARSAC_Embed
-from torchrl.collector.para.async_mt import AsyncMultiTaskParallelCollectorForActionRepresentation_v2
+from torchrl.collector.para.async_mt import AsyncMultiTaskParallelCollectorForActionRepresentation_Embed_Net
 from torchrl.replay_buffers.shared import AsyncSharedReplayBuffer
 import gym
 
@@ -53,7 +53,7 @@ def experiment(args):
 
     experiment_name = os.path.split( os.path.splitext( args.config )[0] )[-1] if args.id is None \
         else args.id
-    experiment_name_v2 = experiment_name + "_v3"
+    experiment_name_v2 = experiment_name + "_embed_net"
 
     logger = Logger( experiment_name_v2 , params['env_name'], args.seed, params, args.log_dir )
 
@@ -117,7 +117,7 @@ def experiment(args):
     epochs = params['general_setting']['pretrain_epochs'] + \
         params['general_setting']['num_epochs']
 
-    params['general_setting']['collector'] = AsyncMultiTaskParallelCollectorForActionRepresentation_v2(
+    params['general_setting']['collector'] = AsyncMultiTaskParallelCollectorForActionRepresentation_Embed_Net(
         env=env, pf=[pf_state,pf_action], embedding = embedding, replay_buffer=replay_buffer,
         task_list=task_list,
         task_args={},
