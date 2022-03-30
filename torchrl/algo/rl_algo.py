@@ -147,8 +147,8 @@ class RLAlgo():
             self.logger.add_epoch_info(epoch, total_frames,
                 time.time() - start, infos )
 
-            if epoch % self.save_interval == 0:
-                self.snapshot(self.save_dir, epoch)
+            # if epoch % self.save_interval == 0:
+            #     self.snapshot(self.save_dir, epoch)
 
         self.snapshot(self.save_dir, "finish")
         self.collector.terminate()

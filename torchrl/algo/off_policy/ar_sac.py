@@ -118,7 +118,6 @@ class ARSAC(OffRLAlgo):
 
             q1_pred = self.qf1([obs, actions,task_inputs])
             q2_pred = self.qf2([obs, actions,task_inputs])
-            # v_pred = self.vf(obs)
 
             if self.automatic_entropy_tuning:
                 """

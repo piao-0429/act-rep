@@ -1,10 +1,10 @@
 #Action-Representation code commands
 
 1.train
-python starter/ar_train_v1.py --config meta_config/mujoco/arsac_train_v1.json --id MUJOCO_ARMT_10_2mode --seed 2 --worker_nums 10 --eval_worker_nums 10
-python starter/ar_train_v2.py --config meta_config/mujoco/arsac_train_v2.json --id MUJOCO_ARMT_10_2mode --seed 1 --worker_nums 1 --eval_worker_nums 1
-
-
+python starter/ar_train.py --config meta_config/mujoco/arsac_train_v1.json --id MUJOCO_ARMT_10_2mode --seed 2 --worker_nums 10 --eval_worker_nums 10
+python starter/ar_train_embed.py --config meta_config/mujoco/arsac_train_embed.json --id MUJOCO_ARMT_10_2mode --seed 1 --worker_nums 1 --eval_worker_nums 1
+python starter/ar_train_net.py --config meta_config/mujoco/arsac_train_net.json --id MUJOCO_ARMT_10_2mode --seed 1 --worker_nums 1 --eval_worker_nums 1
+python starter/ar_train_embed_net.py --config meta_config/mujoco/ar_train_embed_net.json --id MUJOCO_ARMT_10_2mode --seed 1 --worker_nums 1 --eval_worker_nums 1
 
 
 
@@ -33,6 +33,9 @@ python torchrl/utils/plot_csv.py --id MUJOCO_ARMT_10_2mode --env_name HalfCheeta
 
 python torchrl/utils/plot_csv.py --id MUJOCO_ARMT_10_2mode_v2 --env_name HalfCheetah-v3 --entry "forward_5.5_v2_eval_rewards" --add_tag _ARMT_10_2mode_v2_seed_1 --seed 1
 python torchrl/utils/plot_csv.py --id MUJOCO_ARMT_10_2mode_v2 --env_name HalfCheetah-v3 --entry "forward_5.5_v2_eval_rewards" --add_tag _ARMT_10_2mode_v2_seed_1 --seed 1
+
+
+
 3.evaluate
 python starter/ar_visual_v1.py --config meta_config/mujoco/arsac_visual_v1.json --id MUJOCO_ARMT_1_2mode --seed 1
 python starter/ar_visual_v1.py --config meta_config/mujoco/arsac_visual_v1.json --id MUJOCO_ARMT_10 --seed 1
