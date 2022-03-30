@@ -62,6 +62,10 @@ class ARSAC_Embed_Net(OffRLAlgo):
             lr=self.plr,
         )
 
+        self.pf_optimizer = optimizer_class(
+            self.pf_action.parameters(),
+            lr=self.plr,
+        )
 
         self.automatic_entropy_tuning = automatic_entropy_tuning
         if self.automatic_entropy_tuning:
@@ -186,19 +190,15 @@ class ARSAC_Embed_Net(OffRLAlgo):
             """
 
             self.embedding_optimizer.zero_grad()
-            # print("before update")
-            # print(self.embedding)
             policy_loss.backward()
-            # print(self.embedding.grad)
-            # print("after update")
-            # print(self.embedding)
-            # print(embedding.grad)
-            # print(embeddings.grad.mean(dim=0))
-            # print(self.embedding)
-            # print(self.embedding.grad)
             self.embedding.grad = embedding.grad
             embedding_norm = torch.nn.utils.clip_grad_norm_([self.embedding], 10)         
             self.embedding_optimizer.step()
+
+            self.pf_optimizer.zero_grad()
+            policy_loss.backward()
+            pf_norm = torch.nn.utils.clip_grad_norm_(self.pf_action.parameters(), 10)
+            self.qf1_optimizer.step()
 
             self.qf1_optimizer.zero_grad()
             qf1_loss.backward()
@@ -225,6 +225,7 @@ class ARSAC_Embed_Net(OffRLAlgo):
 
             
             info['Training/embedding_norm'] = embedding_norm.item()
+            info['Training/pf_norm'] = pf_norm.item()
             info['Training/qf1_norm'] = qf1_norm.item()
             info['Training/qf2_norm'] = qf2_norm.item()
 
@@ -259,6 +260,8 @@ class ARSAC_Embed_Net(OffRLAlgo):
     @property
     def snapshot_networks(self):
         return [
+            ["pf_state", self.pf_state],
+            ["pf_action", self.pf_action],
             ["qf1", self.qf1],
             ["qf2", self.qf2],
         ]

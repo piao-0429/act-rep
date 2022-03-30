@@ -249,6 +249,7 @@ class ARSAC_Net(OffRLAlgo):
     @property
     def snapshot_networks(self):
         return [
+            ["pf_state", self.pf_state],
             ["pf_action", self.pf_action],
             ["qf1", self.qf1],
             ["qf2", self.qf2],
