@@ -42,7 +42,7 @@
     },
 
     "sac":{
-        "plr" : 3e-4,
+        "plr" : 3e-5,
         "qlr" : 3e-4,
         "reparameterization": true,
         "automatic_entropy_tuning": true,

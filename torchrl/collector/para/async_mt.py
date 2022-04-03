@@ -1,4 +1,4 @@
-
+import csv
 import torch
 import copy
 import numpy as np
@@ -997,7 +997,8 @@ class AsyncMultiTaskParallelCollectorForActionRepresentation_Embed(AsyncSingleTa
                     rew += r
                     if env_info.eval_render:
                         env_info.env.render()
-                   
+                print(info['x_velocity'])
+                print(info['reward_ctrl'])
 
                 eval_rews.append(rew)
                 done = False
@@ -1100,17 +1101,25 @@ class AsyncMultiTaskParallelCollectorForActionRepresentation_Embed(AsyncSingleTa
         self.shared_funcs["pf_state"].load_state_dict(self.funcs["pf_state"].state_dict())
         self.shared_funcs["pf_action"].load_state_dict(self.funcs["pf_action"].state_dict())
         tasks_result = []
-
+        
+        embed_csv_path = "log/embedding_collection.csv"
+        embed_file = open(embed_csv_path, "a")
+        embed_writer = csv.writer(embed_file)
+        
+        
         active_task_counts = 0
         for _ in range(self.eval_worker_nums):
             worker_rst = self.eval_shared_que.get()
-            print(worker_rst['embedding'])
+            embedding = worker_rst['embedding'].detach().cpu().numpy()
+            embed_writer.writerow(embedding)
+            
+            # print(worker_rst['embedding'])
             if worker_rst["eval_rewards"] is not None:
                 active_task_counts += 1
                 eval_rews += worker_rst["eval_rewards"]
                 tasks_result.append((worker_rst["task_name"], 
                 np.mean(worker_rst["eval_rewards"])))
-
+        embed_file.close()
         tasks_result.sort()
 
         dic = OrderedDict()

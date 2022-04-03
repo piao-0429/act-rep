@@ -29,7 +29,9 @@ from mujoco_py import GlfwContext
 args = get_args()
 params = get_params(args.config)
 env=gym.make(params['env_name'])
-task_list=["forward_5.5_net"]
+
+task_list=["forward_5_net"]
+
 task_num=len(task_list)
 representation_shape= params['representation_shape']
 embedding_shape=params['embedding_shape']
@@ -53,8 +55,8 @@ experiment_id = str(args.id)
 experiment_id = experiment_id + "_net"
 model_dir="log/"+experiment_id+"/"+params['env_name']+"/"+str(args.seed)+"/model/"
 
-pf_state.load_state_dict(torch.load(model_dir + "model_pf_state_best.pth", map_location='cpu'))
-pf_action.load_state_dict(torch.load(model_dir + "model_pf_action_best.pth", map_location='cpu'))
+pf_state.load_state_dict(torch.load(model_dir + "model_pf_state_finish.pth", map_location='cpu'))
+pf_action.load_state_dict(torch.load(model_dir + "model_pf_action_finish.pth", map_location='cpu'))
 
 
 ############################# save images for gif ##############################
@@ -148,7 +150,7 @@ def save_gif_images(env_name, max_ep_len):
 		average_v_writer = csv.writer(average_v_file)
 		average_v_writer.writerow(["task","v_mean","v_std"])
 
-	embedding=torch.Tensor([93.40412,160.58662,-150.15569,91.56476,25.814232,176.67238,228.76828,228.39816,673.3303,81.97838,200.58913,-530.2282,192.42592,-315.63486,107.21659,83.910355]).unsqueeze(0)
+	embedding=torch.Tensor([116.664024,119.96245,-351.09204,75.934746,-0.38816255,47.560204,210.16185,394.06946,303.57556,45.661777,-90.59202,-167.94614,-247.4873,-163.70718,117.240944,81.90115]).unsqueeze(0)
 				
 
 
