@@ -997,8 +997,8 @@ class AsyncMultiTaskParallelCollectorForActionRepresentation_Embed(AsyncSingleTa
                     rew += r
                     if env_info.eval_render:
                         env_info.env.render()
-                print(info['x_velocity'])
-                print(info['reward_ctrl'])
+                # print(info['x_velocity'])
+                # print(info['reward_ctrl'])
 
                 eval_rews.append(rew)
                 done = False

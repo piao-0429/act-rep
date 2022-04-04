@@ -32,11 +32,8 @@ def experiment(args):
 
     device = torch.device("cuda:{}".format(args.device) if args.cuda else "cpu")
     env=gym.make(params['env_name'])
-    task_list=["forward_1","forward_2","forward_3","forward_4","forward_5","forward_6","forward_7","forward_8","forward_9","jump"]
-    # # task_list = ["forward_1","forward_2","forward_3","forward_4","forward_5"]
-    # task_list = ["forward_5.5"]
+    task_list=["forward_1","forward_2","forward_3","forward_4","forward_5","forward_6","forward_7","forward_8","forward_9","forward_10"]
     task_num=len(task_list)
-    task_input_shape = params['task_input_shape']
     representation_shape = params['representation_shape']
     embedding_shape = params['embedding_shape']
 
@@ -73,8 +70,8 @@ def experiment(args):
     )
 
     pf_task=networks.Net(
-        input_shape=task_input_shape, 
-        output_shape=representation_shape,
+        input_shape=task_num, 
+        output_shape=embedding_shape,
         **params['p_task_net']
     )
 
@@ -85,12 +82,12 @@ def experiment(args):
     )
     
     qf1 = networks.FlattenNet( 
-        input_shape = env.observation_space.shape[0] + env.action_space.shape[0] + task_input_shape,
+        input_shape = env.observation_space.shape[0] + env.action_space.shape[0] + task_num,
         output_shape = 1,
         **params['q_net'] 
     )
     qf2 = networks.FlattenNet( 
-        input_shape = env.observation_space.shape[0] + env.action_space.shape[0] + task_input_shape,
+        input_shape = env.observation_space.shape[0] + env.action_space.shape[0] + task_num,
         output_shape = 1,
         **params['q_net'] 
     )
@@ -103,7 +100,7 @@ def experiment(args):
         "rewards": [0],
         "terminals": [False],
         "task_idxs": [0],
-        "task_inputs": np.zeros(task_input_shape),
+        "task_inputs": np.zeros(task_num),
     }
     
     replay_buffer = AsyncSharedReplayBuffer( int(buffer_param['size']),

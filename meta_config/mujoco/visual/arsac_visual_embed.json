@@ -3,7 +3,7 @@
 
     "representation_shape":16,
 
-    "embedding_shape":16,
+    "embedding_shape":3,
 
     "cat_state_task": false,
 

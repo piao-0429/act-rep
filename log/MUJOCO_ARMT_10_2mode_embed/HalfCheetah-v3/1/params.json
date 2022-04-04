@@ -48,7 +48,7 @@
     "eval_episodes": 3
   },
   "sac": {
-    "plr": 0.0003,
+    "plr": 3e-05,
     "qlr": 0.0003,
     "reparameterization": true,
     "automatic_entropy_tuning": true,

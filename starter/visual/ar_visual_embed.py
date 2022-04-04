@@ -29,7 +29,7 @@ from mujoco_py import GlfwContext
 args = get_args()
 params = get_params(args.config)
 env=gym.make(params['env_name'])
-task_list=["forward_5.5_embed"]
+task_list=["forward_3.5_embed"]
 task_num=len(task_list)
 representation_shape= params['representation_shape']
 embedding_shape=params['embedding_shape']
@@ -149,7 +149,7 @@ def save_gif_images(env_name, max_ep_len):
 		average_v_writer.writerow(["task","v_mean","v_std"])
 
 	
-	embedding=torch.Tensor([93.78248,80.87616,-111.24453,118.26495,-36.947315,169.27448,336.4213,231.62402,624.8953,112.3575,50.158806,-513.1058,168.45273,-271.87042,100.30959,73.68002]).unsqueeze(0)		
+	embedding=torch.Tensor([-2.8934288,-0.5454976,5.9825735]).unsqueeze(0)		
 
 
 	for i in range(task_num):
