@@ -5,6 +5,7 @@ python starter/train/ar_train.py --config meta_config/mujoco/train/arsac_train.j
 python starter/train/ar_train_embed.py --config meta_config/mujoco/train/arsac_train_embed.json --id MUJOCO_ARMT_10_BASE --seed 1 --worker_nums 1 --eval_worker_nums 1
 python starter/train/ar_train_net.py --config meta_config/mujoco/train/arsac_train_net.json --id MUJOCO_ARMT_10_2mode --seed 1 --worker_nums 1 --eval_worker_nums 1
 python starter/train/ar_train_embed_net.py --config meta_config/mujoco/train/arsac_train_embed_net.json --id MUJOCO_ARMT_10_2mode --seed 1 --worker_nums 1 --eval_worker_nums 1
+python starter/train/ar_train.py --config meta_config/mujoco/train/arsac_train.json --id MUJOCO_ARMT_HALFCHEETAH_8_v2 --seed 1 --worker_nums 8 --eval_worker_nums 8
 
 
 2.plot
@@ -24,7 +25,8 @@ python torchrl/utils/plot_csv.py --id MUJOCO_ARMT_10_2mode_net --env_name HalfCh
 python torchrl/utils/plot_csv.py --id MUJOCO_ARMT_10_2mode_v2 --env_name HalfCheetah-v3 --entry "forward_5.5_v2_eval_rewards" --add_tag _ARMT_10_2mode_v2_seed_1 --seed 1
 python torchrl/utils/plot_csv.py --id MUJOCO_ARMT_10_2mode_v2 --env_name HalfCheetah-v3 --entry "forward_5.5_v2_eval_rewards" --add_tag _ARMT_10_2mode_v2_seed_1 --seed 1
 python torchrl/utils/plot_csv.py --id MUJOCO_ARMT_10_2mode_embed --env_name HalfCheetah-v3 --entry "forward_5.5_embed_eval_rewards" --add_tag _ARMT_10_2mode_net_seed_1 --seed 1
-python torchrl/utils/plot_csv.py --id MUJOCO_ARMT_10_BASE_embed --env_name HalfCheetah-v3 --entry "forward_3.5_embed_eval_rewards" --add_tag _ARMT_10_BASE_embed_seed_1 --seed 1
+python torchrl/utils/plot_csv.py --id MUJOCO_ARMT_10_BASE_embed_random --env_name HalfCheetah-v3 --entry "forward_3.5_embed_eval_rewards" --add_tag _ARMT_10_BASE_embed_random_seed_1 --seed 1
+python torchrl/utils/plot_csv.py --id MUJOCO_ARST_ANT --env_name Ant-v3 --entry "run_eval_rewards" --add_tag _ARST_ANT_seed_1 --seed 1
 
 
 3.evaluate
@@ -34,6 +36,7 @@ python starter/visual/ar_visual_embed.py --config meta_config/mujoco/visual/arsa
 
 python starter/visual/ar_visual.py --config meta_config/mujoco/visual/arsac_visual.json --id MUJOCO_ARMT_10_BASE --seed 1
 python starter/visual/ar_visual_mixed.py --config meta_config/mujoco/visual/arsac_visual_mixed.json --id MUJOCO_ARMT_10_BASE --seed 1
+python starter/visual/ar_visual.py --config meta_config/mujoco/visual/arsac_visual.json --id MUJOCO_ARST_ANT --seed 1
 
 
         
