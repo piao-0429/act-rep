@@ -32,8 +32,7 @@ def experiment(args):
 
     device = torch.device("cuda:{}".format(args.device) if args.cuda else "cpu")
     env=gym.make(params['env_name'])
-    task_list=["forward_3","forward_4","forward_5","forward_6","forward_7","run_in_60", "run_in_120", "run_in_180","run_in_240", "run_in_300"]
-    # task_list=["run"]
+    task_list=["forward_3", "forward_4", "forward_5", "forward_6", "forward_7", "forward_8", "forward_9", "handstand"]
     task_num=len(task_list)
     representation_shape = params['representation_shape']
     embedding_shape = params['embedding_shape']
