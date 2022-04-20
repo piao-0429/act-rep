@@ -1,2 +1,12 @@
 task,v_mean,v_std
 forward_3.5_embed,3.503076342873542,0.06743443103938519
+task,v_mean,v_std
+forward_3.5_embed_random,3.503624770780425,0.07233581912638802
+task,v_mean,v_std
+forward_3.5_embed_random,2.4830996407533226,0.07862420014291685
+task,v_mean,v_std
+forward_3.5_embed_random,4.9628591778277125,0.19618096650664457
+task,v_mean,v_std
+forward_3.5_embed_random,3.5090094244060945,0.4677450577965891
+task,v_mean,v_std
+forward_3.5_embed_random,-0.11715066751843271,0.35819317510644133
