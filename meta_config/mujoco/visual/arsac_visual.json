@@ -1,9 +1,9 @@
 {
-    "env_name" : "Ant-v3",
+    "env_name" : "HalfCheetah-v3",
 
     "representation_shape":16,
 
-    "embedding_shape":4,
+    "embedding_shape":3,
 
     "cat_state_task": false,
 

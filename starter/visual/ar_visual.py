@@ -29,9 +29,9 @@ from mujoco_py import GlfwContext
 args = get_args()
 params = get_params(args.config)
 env=gym.make(params['env_name'])
-# task_list=["forward_5","forward_6","forward_7","forward_8","forward_9","forward_10"]
+
 task_list=["forward_1","forward_2","forward_3","forward_4","forward_5","forward_6","forward_7","forward_8","forward_9","forward_10"]
-task_list=["run"]
+
 task_num=len(task_list)
 representation_shape= params['representation_shape']
 embedding_shape=params['embedding_shape']
@@ -46,10 +46,11 @@ pf_state = networks.Net(
 	**params['p_state_net']
 )
 
-pf_task=networks.Net(
+pf_task=networks.NormNet(
 	input_shape=task_num, 
 	output_shape=embedding_shape,
-	**params['p_task_net']
+	**params['p_task_net'],
+	norm = 5
 )
 
 pf_action=policies.ActionRepresentationGuassianContPolicy(

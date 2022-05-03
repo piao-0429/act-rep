@@ -32,7 +32,7 @@ def experiment(args):
 
     device = torch.device("cuda:{}".format(args.device) if args.cuda else "cpu")
     env=gym.make(params['env_name'])
-    task_list=["forward_1", "forward_2", "forward_3", "forward_4", "forward_5", "forward_6", "forward_7", "forward_8", "turn_0", "turn_30", "turn_60", "turn_90", "turn_120", "turn_150", "turn_180", "turn_210", "turn_240", "turn_270", "turn_300", "turn_330"]
+    task_list=["forward_1", "forward_2", "forward_3", "forward_4", "forward_5", "forward_6", "forward_7", "forward_8", "forward_9", "forward_10"]
     task_num = len(task_list)
     representation_shape = params['representation_shape']
     embedding_shape = params['embedding_shape']
@@ -69,10 +69,11 @@ def experiment(args):
         **params['p_state_net']
     )
 
-    pf_task=networks.Net(
+    pf_task=networks.NormNet(
         input_shape=task_num, 
         output_shape=embedding_shape,
-        **params['p_task_net']
+        **params['p_task_net'],
+        norm = 5
     )
 
     pf_action=policies.ActionRepresentationGuassianContPolicy(

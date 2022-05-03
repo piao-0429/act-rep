@@ -12,6 +12,7 @@ import os
 import time
 import os.path as osp
 import numpy as np
+import torch.nn.functional as F
 from torchrl.utils import get_args
 from torchrl.utils import get_params
 from torchrl.env import get_env
@@ -149,32 +150,32 @@ def save_gif_images(env_name, max_ep_len):
 		average_v_writer.writerow(["task","v_mean","v_std"])
 
 	pre_embeddings=[]
-	pre_embedding=torch.Tensor([-10.661215,-1.240579,-3.3444042]).unsqueeze(0)
+	pre_embedding=torch.Tensor([-2.7487948,0.42855635,4.1545715]).unsqueeze(0)
 	pre_embeddings.append(pre_embedding)
-	pre_embedding=torch.Tensor([-6.6341405,0.010744736,1.347795]).unsqueeze(0)
+	pre_embedding=torch.Tensor([4.3051043,-2.0263352,1.5362432]).unsqueeze(0)
 	pre_embeddings.append(pre_embedding)
-	pre_embedding=torch.Tensor([-5.642037,-3.736256,3.568873]).unsqueeze(0)
+	pre_embedding=torch.Tensor([4.626919,1.2133138,1.455846]).unsqueeze(0)
 	pre_embeddings.append(pre_embedding)
-	pre_embedding=torch.Tensor([-2.0516467,-0.92864585,7.6137214]).unsqueeze(0)
+	pre_embedding=torch.Tensor([2.7596745,3.6690512,1.98047]).unsqueeze(0)
 	pre_embeddings.append(pre_embedding)
-	pre_embedding=torch.Tensor([2.1141756,1.082346,5.9462113]).unsqueeze(0)
+	pre_embedding=torch.Tensor([1.7488582,4.540233,1.152293]).unsqueeze(0)
 	pre_embeddings.append(pre_embedding)
-	pre_embedding=torch.Tensor([3.854389,0.2507965,7.3754015]).unsqueeze(0)
+	pre_embedding=torch.Tensor([0.785551,4.9105945,0.51862735]).unsqueeze(0)
 	pre_embeddings.append(pre_embedding)
-	pre_embedding=torch.Tensor([5.274848,-0.9349187,8.321509]).unsqueeze(0)
+	pre_embedding=torch.Tensor([0.68335223,4.947104,-0.24329783]).unsqueeze(0)
 	pre_embeddings.append(pre_embedding)
-	pre_embedding=torch.Tensor([8.573753,0.32672,6.7929997]).unsqueeze(0)
+	pre_embedding=torch.Tensor([1.095417,4.764095,-1.0504589]).unsqueeze(0)
 	pre_embeddings.append(pre_embedding)
-	pre_embedding=torch.Tensor([10.297417,-0.6896142,5.340005]).unsqueeze(0)
+	pre_embedding=torch.Tensor([1.7505156,4.257007,-1.9528402]).unsqueeze(0)
 	pre_embeddings.append(pre_embedding)
-	pre_embedding=torch.Tensor([10.213425,-3.9296908,6.39862]).unsqueeze(0)
+	pre_embedding=torch.Tensor([1.750756,3.6864915,-2.888708]).unsqueeze(0)
 	pre_embeddings.append(pre_embedding)
 	embeddings=[]
 	for i in range(9):
 		embedding = (pre_embeddings[i]+pre_embeddings[i+1])/2
+		embedding = 5 * F.normalize(embedding)
 		embeddings.append(embedding)
-	# embedding=torch.Tensor([93.78248,80.87616,-111.24453,118.26495,-36.947315,169.27448,336.4213,231.62402,624.8953,112.3575,50.158806,-513.1058,168.45273,-271.87042,100.30959,73.68002]).unsqueeze(0)		
-
+	
 
 	for i in range(task_num):
 		if params["save_embedding"]:
