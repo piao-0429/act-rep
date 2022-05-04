@@ -2,7 +2,7 @@
     "env_name" : "HalfCheetah-v3",
 
     "replay_buffer":{
-        "size": 1e6
+        "size": 1.2e6
     },
 
     "representation_shape":16,
@@ -34,10 +34,10 @@
     "general_setting": {
         "discount" : 0.99,
         "pretrain_epochs" : 20,
-        "num_epochs" : 10000,
+        "num_epochs" : 8000,
         "epoch_frames" : 200,
         "max_episode_frames" : 200,
-        "batch_size" : 1280,
+        "batch_size" : 1920,
         "min_pool" : 10000,
         "target_hard_update_period" : 1000,
         "use_soft_update" : true,

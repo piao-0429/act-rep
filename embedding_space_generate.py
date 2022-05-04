@@ -48,7 +48,7 @@ pf_action=policies.ActionRepresentationGuassianContPolicy(
 	**params['p_action_net'] 
 )
 experiment_id = str(args.id)
-experiment_id_v2 = experiment_id + "_embedding_space"
+experiment_id_v2 = experiment_id + "_embedding_space_detail_1"
 model_dir="log/"+experiment_id+"/"+params['env_name']+"/"+str(args.seed)+"/model/"
 
 pf_state.load_state_dict(torch.load(model_dir + "model_pf_state_finish.pth", map_location='cpu'))
@@ -79,27 +79,27 @@ velocity_dir = velocity_dir + '/' + str(args.seed) + '/'
 if not os.path.exists(velocity_dir):
     os.makedirs(velocity_dir)	
 
-embedding_space_csv_path = velocity_dir+ "/embedding_velocity_record.csv"
+embedding_space_csv_path = velocity_dir+ "/embedding_velocity_record_detail_1.csv"
 embedding_space_file = open(embedding_space_csv_path,"w")
 embedding_space_writer = csv.writer(embedding_space_file)
 # embedding_space_writer.writerow(["embedding_x", "embedding_y", "embedding_z", "v_mean", "v_std", "label"])
 
 embeddings = []
 
-for r in range(50):
-    for theta in range(0, 180, 10):
-        for fi in range(0, 360, 10):
-            x = 0.3 * r * sin(theta * pi/ 180) * cos(fi * pi/ 180)
-            y = - 1 + 0.2 * r * sin(theta * pi/ 180) * sin(fi * pi/ 180)
-            z = 2 + 0.2 * r * cos(theta * pi/ 180)
-            embeddings.append([x, y ,z])
+
+for theta in range(0, 180, 4):
+    for fi in range(0, 360, 8):
+        x = 5 * sin(theta * pi/ 180) * cos(fi * pi/ 180)
+        y = 5 * sin(theta * pi/ 180) * sin(fi * pi/ 180)
+        z = 5 * cos(theta * pi/ 180)
+        embeddings.append([x, y ,z])
 	
 
 
 for embedding in embeddings:
 
     embedding=torch.Tensor(embedding).unsqueeze(0)	
-    velocity_csv_path = velocity_dir+ '/velocity_record.csv'
+    velocity_csv_path = velocity_dir+ '/velocity_record_detail_1.csv'
     velocity_file = open(velocity_csv_path,'w')
     velocity_writer = csv.writer(velocity_file)
 
@@ -126,10 +126,9 @@ for embedding in embeddings:
     velocity_list = velocity_list[100:]
     v_mean = np.mean(velocity_list)
     v_std = np.std(velocity_list)
-    if (v_mean >= 1 and v_mean <= 6 and v_std < 1) or (v_mean > 6 and v_mean <= 12 and v_std < 2):
-        label = (11 - v_mean)/ 10
+    if (v_std < v_mean/4) and (v_mean>1 and v_mean<12) :
         embedding = embedding.squeeze(0).numpy()
-        embedding_space_writer.writerow([embedding[0], embedding[1], embedding[2], v_mean, v_std, label])
+        embedding_space_writer.writerow([embedding[0], embedding[1], embedding[2], v_mean])
 
 
 env.close()
