@@ -66,7 +66,7 @@ def save_gif_images(env_name, max_ep_len):
 	print("============================================================================================")
 	device = torch.device("cuda:{}".format(args.device) if args.cuda else "cpu")
 	
-	env.reset(seed=args.seed)
+	env.seed(args.seed)
 	torch.manual_seed(args.seed)
 	np.random.seed(args.seed)
 	if args.cuda:
