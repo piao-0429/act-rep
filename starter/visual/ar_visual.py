@@ -31,7 +31,7 @@ params = get_params(args.config)
 env=gym.make(params['env_name'])
 
 task_list=["forward_1","forward_2","forward_3","forward_4","forward_5","forward_6","forward_7","forward_8","forward_9","forward_10"]
-
+task_list = ["dir_0", "dir_30", "dir_60", "dir_90", "dir_120", "dir_150", "dir_180", "dir_210", "dir_240", "dir_270", "dir_300", "dir_330"]
 task_num=len(task_list)
 representation_shape= params['representation_shape']
 embedding_shape=params['embedding_shape']
@@ -61,11 +61,13 @@ pf_action=policies.ActionRepresentationGuassianContPolicy(
 experiment_id = str(args.id)
 model_dir="log/"+experiment_id+"/"+params['env_name']+"/"+str(args.seed)+"/model/"
 
-pf_state.load_state_dict(torch.load(model_dir + "model_pf_state_finish.pth", map_location='cpu'))
-pf_task.load_state_dict(torch.load(model_dir + "model_pf_task_finish.pth", map_location='cpu'))
-pf_action.load_state_dict(torch.load(model_dir + "model_pf_action_finish.pth", map_location='cpu'))
+# pf_state.load_state_dict(torch.load(model_dir + "model_pf_state_finish.pth", map_location='cpu'))
+# pf_task.load_state_dict(torch.load(model_dir + "model_pf_task_finish.pth", map_location='cpu'))
+# pf_action.load_state_dict(torch.load(model_dir + "model_pf_action_finish.pth", map_location='cpu'))
 
-
+pf_state.load_state_dict(torch.load(model_dir + "model_pf_state_best7815.pth", map_location='cpu'))
+pf_task.load_state_dict(torch.load(model_dir + "model_pf_task_best7815.pth", map_location='cpu'))
+pf_action.load_state_dict(torch.load(model_dir + "model_pf_action_best7815.pth", map_location='cpu'))
 
 ############################# save images for gif ##############################
 
@@ -162,10 +164,10 @@ def save_gif_images(env_name, max_ep_len):
 			embed_csv_path = embed_dir + '/' + task_list[i] + ".csv"
 			embed_file = open(embed_csv_path, "w")
 			embed_writer = csv.writer(embed_file)
-		if params["save_velocity"]:
-			velocity_csv_path = velocity_dir+ '/' + task_list[i] + ".csv"
-			velocity_file = open(velocity_csv_path,'w')
-			velocity_writer = csv.writer(velocity_file)
+		# if params["save_velocity"]:
+		# 	velocity_csv_path = velocity_dir+ '/' + task_list[i] + ".csv"
+		# 	velocity_file = open(velocity_csv_path,'w')
+		# 	velocity_writer = csv.writer(velocity_file)
 
 		ob=env.reset()
 		task_input = torch.zeros(len(task_list))
@@ -179,27 +181,38 @@ def save_gif_images(env_name, max_ep_len):
 				act=out["action"]
 				act = act.detach().cpu().numpy()
 				next_ob, _, done, info = env.step(act)
-				if params["save_velocity"]:
-					x_velocity = info['x_velocity']
-					velocity_writer.writerow([x_velocity])
+				# if params["save_velocity"]:
+				# 	x_velocity = info['x_velocity']
+				# 	velocity_writer.writerow([x_velocity])
 				# img = env.render(mode = 'rgb_array')
 				# img = Image.fromarray(img)
 				# img.save(gif_images_dir_list[i] + '/' + experiment_id + '_' + task_list[i] + str(t).zfill(6) + '.jpg')
 				ob=next_ob
 				if done:
 					break
+			x = info['x_position']
+			y = info['y_position']
+			dir = np.arctan(y/x)/ np.pi * 180
+			if x<0 and y>0:
+				dir+=180
+			elif x<0 and y<0:
+				dir+=180
+			elif x>0 and y<0:
+				dir+=360
+			
+			print("task", i, "direction:", dir)
 
 		if params["save_embedding"]:
 			embedding = embedding.squeeze(0)
 			embedding = embedding.detach().cpu().numpy()
 			embed_writer.writerow(embedding)
 			embed_file.close()
-		if params["save_velocity"]:
-			velocity_file.close()
-			velocity_file = open(velocity_csv_path,'r')
-			velocity_list = np.loadtxt(velocity_file)
-			velocity_list = velocity_list[100:]
-			average_v_writer.writerow([task_list[i], np.mean(velocity_list), np.std(velocity_list)])
+		# if params["save_velocity"]:
+		# 	velocity_file.close()
+		# 	velocity_file = open(velocity_csv_path,'r')
+		# 	velocity_list = np.loadtxt(velocity_file)
+		# 	velocity_list = velocity_list[100:]
+		# 	average_v_writer.writerow([task_list[i], np.mean(velocity_list), np.std(velocity_list)])
 
 
 	env.close()

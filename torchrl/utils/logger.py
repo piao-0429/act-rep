@@ -1,4 +1,4 @@
-import tensorboardX
+# import tensorboardX
 import logging
 import shutil
 import os
@@ -27,14 +27,15 @@ class Logger():
         self.work_dir = work_dir
         if os.path.exists( work_dir ):
             shutil.rmtree(work_dir)
-        self.tf_writer = tensorboardX.SummaryWriter(work_dir)
+        # self.tf_writer = tensorboardX.SummaryWriter(work_dir)
 
         self.csv_file_path = os.path.join(work_dir, 'log.csv')
 
         self.update_count = 0
         self.stored_infos = {}
-
-        with open( os.path.join(work_dir, 'params.json'), 'w' ) as output_param:
+        if not os.path.exists(work_dir):
+            os.makedirs(work_dir)
+        with open( os.path.join(work_dir, 'params.json'), 'w+' ) as output_param:
             json.dump( params, output_param, indent = 2 )
 
         self.logger.info("Experiment Name:{}".format(experiment_id))
@@ -67,7 +68,7 @@ class Logger():
         tabulate_list = [["Name", "Value"]]
         
         for info in infos:
-            self.tf_writer.add_scalar( info, infos[info], total_frames )
+            # self.tf_writer.add_scalar( info, infos[info], total_frames )
             tabulate_list.append([ info, "{:.5f}".format( infos[info] ) ])
             if csv_write:
                 if epoch_num == 0:
@@ -84,8 +85,8 @@ class Logger():
             temp_list = [info]
             for name, method in zip( name_list, method_list ):
                 processed_info = method(self.stored_infos[info])
-                self.tf_writer.add_scalar( "{}_{}".format( info, name ),
-                    processed_info, total_frames )
+                # self.tf_writer.add_scalar( "{}_{}".format( info, name ),
+                #     processed_info, total_frames )
                 temp_list.append( "{:.5f}".format( processed_info ) )
                 if csv_write:
                     if epoch_num == 0:

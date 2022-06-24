@@ -130,9 +130,12 @@ class RLAlgo():
             # del eval_infos["eval_rewards"]
 
             if self.best_eval is None or \
-                np.mean(eval_infos["eval_rewards"]) > self.best_eval:
-                self.best_eval = np.mean(eval_infos["eval_rewards"])
-                self.snapshot(self.save_dir, 'best')
+                np.min(eval_infos["eval_rewards"]) > self.best_eval:
+                self.best_eval = np.min(eval_infos["eval_rewards"])
+                # np.mean(eval_infos["eval_rewards"]) > self.best_eval:
+                # self.best_eval = np.mean(eval_infos["eval_rewards"])
+                
+                self.snapshot(self.save_dir, 'best'+str(epoch))
             del eval_infos["eval_rewards"]
 
             infos["Running_Average_Rewards"] = np.mean(self.episode_rewards)
@@ -143,7 +146,6 @@ class RLAlgo():
             infos["Eval____Time"] = eval_time
             infos.update(eval_infos)
             infos.update(finish_epoch_info)
-            # print(infos)
             self.logger.add_epoch_info(epoch, total_frames,
                 time.time() - start, infos )
 

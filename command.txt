@@ -6,6 +6,7 @@ python starter/train/ar_train_embed.py --config meta_config/mujoco/train/arsac_t
 python starter/train/ar_train_net.py --config meta_config/mujoco/train/arsac_train_net.json --id MUJOCO_ARMT_10_2mode --seed 1 --worker_nums 1 --eval_worker_nums 1
 python starter/train/ar_train_embed_net.py --config meta_config/mujoco/train/arsac_train_embed_net.json --id MUJOCO_ARMT_10_2mode --seed 1 --worker_nums 1 --eval_worker_nums 1
 python starter/train/ar_train.py --config meta_config/mujoco/train/arsac_train.json --id MUJOCO_ARMT_HALFCHEETAH_12 --seed 1 --worker_nums 12 --eval_worker_nums 12
+python starter/train/ar_train.py --config meta_config/mujoco/train/arsac_train.json --id MUJOCO_ARMT_ANT_DIR_12 --seed 4 --worker_nums 12 --eval_worker_nums 12
 
 
 2.plot
@@ -36,7 +37,7 @@ python starter/visual/ar_visual_embed.py --config meta_config/mujoco/visual/arsa
 
 python starter/visual/ar_visual.py --config meta_config/mujoco/visual/arsac_visual.json --id MUJOCO_ARMT_10_BASE --seed 1
 python starter/visual/ar_visual_mixed.py --config meta_config/mujoco/visual/arsac_visual_mixed.json --id MUJOCO_ARMT_10 --seed 2
-python starter/visual/ar_visual.py --config meta_config/mujoco/visual/arsac_visual.json --id MUJOCO_ARMT_10 --seed 2
+python starter/visual/ar_visual.py --config meta_config/mujoco/visual/arsac_visual.json --id MUJOCO_ARMT_ANT_DIR_12 --seed 4
 
 python embedding_space_generate.py --config meta_config/mujoco/visual/arsac_visual_embedding_space.json --id MUJOCO_ARMT_10 --seed 2
 
