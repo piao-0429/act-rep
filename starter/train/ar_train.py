@@ -38,6 +38,7 @@ def experiment(args):
     
     # task_list for ant-direction
     task_list = ["direction_0", "direction_30", "direction_60", "direction_90", "direction_120", "direction_150", "direction_180", "direction_210", "direction_240", "direction_270", "direction_300", "direction_330"]
+    task_list = ["direction_0", "direction_15", "direction_30", "direction_45", "direction_60", "direction_75", "direction_90", "direction_105", "direction_120", "direction_135", "direction_150", "direction_165"]
     
     
     task_num = len(task_list)
