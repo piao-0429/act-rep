@@ -73,7 +73,7 @@ def experiment(args):
         **params['p_state_net']
     )
     
-    embedding = torch.Tensor([-3.8468418,-2.3324509,5.591297])
+    embedding = torch.Tensor([0.67270404,2.8474584,-4.0545588])
     embedding = embedding.to(device).requires_grad_()
     
     pf_action=policies.ActionRepresentationGuassianContPolicy(

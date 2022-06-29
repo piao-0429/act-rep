@@ -33,12 +33,12 @@ def experiment(args):
     device = torch.device("cuda:{}".format(args.device) if args.cuda else "cpu")
     env=gym.make(params['env_name'])
    
-    # task_list=["forward_1", "forward_2", "forward_3", "forward_4", "forward_5", "forward_6", "forward_7", "forward_8", "forward_9", "forward_10"]
-    # task_list=["forward_1", "forward_2", "forward_3", "forward_4", "forward_5", "backward_1", "backward_2", "backward_3", "backward_4", "backward_5", "back_jump", "hand_stand"]
+    # task_list for Ant-Vel
+    task_list=["forward_1", "forward_2", "forward_3", "forward_4", "forward_5", "backward_1", "backward_2", "backward_3", "backward_4", "backward_5"]
     
-    # task_list for ant-direction
-    task_list = ["direction_0", "direction_30", "direction_60", "direction_90", "direction_120", "direction_150", "direction_180", "direction_210", "direction_240", "direction_270", "direction_300", "direction_330"]
-    task_list = ["direction_0", "direction_15", "direction_30", "direction_45", "direction_60", "direction_75", "direction_90", "direction_105", "direction_120", "direction_135", "direction_150", "direction_165"]
+    # # task_list for Ant-Dir
+    # task_list = ["direction_0", "direction_30", "direction_60", "direction_90", "direction_120", "direction_150", "direction_180", "direction_210", "direction_240", "direction_270", "direction_300", "direction_330"]
+    # task_list = ["direction_0", "direction_15", "direction_30", "direction_45", "direction_60", "direction_75", "direction_90", "direction_105", "direction_120", "direction_135", "direction_150", "direction_165"]
     
     
     task_num = len(task_list)

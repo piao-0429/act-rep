@@ -10,5 +10,6 @@ __all__ = [
     'TD3',
     'ARSAC',
     'ARSAC_Embed',
-    'ARSAC_Embed_Net'
+    'ARSAC_Embed_Net',
+    'ARSAC_v2'
 ]
